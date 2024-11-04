@@ -27,7 +27,13 @@ public class UserController {
 
         User user = new User(age, gender, height, weight, targetWeight, "moderate");
         double bmr = user.calculateBMR();
-        model.addAttribute("bmr", bmr); // 添加 BMR 到模型
+
+        model.addAttribute("age", age);
+        model.addAttribute("gender", gender);
+        model.addAttribute("height", height);
+        model.addAttribute("weight", weight);
+        model.addAttribute("targetWeight", targetWeight);
+        model.addAttribute("bmr", bmr);
         return "result"; // 返回 result.html
     }
 }
