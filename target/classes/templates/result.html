@@ -1,3 +1,4 @@
+<!-- result.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,13 +40,12 @@
     <div class="container">
         <h1>Your BMR Result</h1>
         <div class="info">
-            <p>Age: <span th:text="${age}">[age]</span></p>
-            <p>Gender: <span th:text="${gender}">[gender]</span></p>
-            <p>Height: <span th:text="${height}">[height]</span> cm</p>
-            <p>Weight: <span th:text="${weight}">[weight]</span> kg</p>
-            <p>Target Weight: <span th:text="${targetWeight}">[targetWeight]</span> kg</p>
-            <p>Your Basal Metabolic Rate (BMR) is: <span th:text="${bmr}">[bmr]</span> calories/day</p>
-
+            <p>Username: <span th:text="${username}"></span></p>
+            <p>Age: <span th:text="${age}"></span></p>
+            <p>Gender: <span th:text="${gender}"></span></p>
+            <p>Height: <span th:text="${height}"></span> cm</p>
+            <p>Weight: <span th:text="${weight}"></span> kg</p>
+            <p>Target Weight: <span th:text="${targetWeight}"></span> kg</p>
         </div>
         <p>Your Basal Metabolic Rate (BMR) is: <span th:text="${bmr}"></span> calories/day</p>
         <a href="/">Back to Calculator</a>

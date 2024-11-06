@@ -3,70 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BMR Calculator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            background-color: #ffffff;
-            padding: 20px;
-            margin-top: 50px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 500px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        label, input, select, button {
-            margin-bottom: 15px;
-        }
-        button {
-            padding: 10px;
-            background-color: #007bff;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>Welcome to the BMR Calculator</title>
 </head>
 <body>
-    <div class="container">
-        <h1>BMR Calculator</h1>
-        <form action="/user/bmr" method="get">
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="age" required>
+    <h1>Welcome to the BMR Calculator</h1>
 
-            <label for="gender">Gender:</label>
-            <select id="gender" name="gender" required>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-            </select>
+    <div th:if="${session['loggedIn'] == null || !session['loggedIn']}">
+        <h2>Please Register or Login</h2>
+        <a href="/register">Register</a> | <a href="/login">Login</a>
+    </div>
 
-            <label for="height">Height (cm):</label>
-            <input type="number" id="height" name="height" required>
-
-            <label for="weight">Weight (kg):</label>
-            <input type="number" id="weight" name="weight" required>
-
-            <label for="targetWeight">Target Weight (kg):</label>
-            <input type="number" id="targetWeight" name="targetWeight" required>
-
-            <button type="submit">Calculate BMR</button>
-        </form>
+    <div th:if="${session['loggedIn'] != null && session['loggedIn']}">
+        <h2>Hello, <span th:text="${username}"></span>!</h2>
+        <p>Age: <span th:text="${age}"></span></p>
+        <p>Gender: <span th:text="${gender}"></span></p>
+        <p>Height: <span th:text="${height}"></span> cm</p>
+        <p>Weight: <span th:text="${weight}"></span> kg</p>
+        <p>Target Weight: <span th:text="${targetWeight}"></span> kg</p>
+        <a href="/user/bmr">Calculate BMR</a>
     </div>
 </body>
 </html>
