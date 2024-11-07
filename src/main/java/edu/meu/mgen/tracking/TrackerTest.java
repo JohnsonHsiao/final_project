@@ -1,3 +1,5 @@
+package edu.meu.mgen.tracking;
+
 import edu.meu.mgen.notification.Notification;
 import edu.meu.mgen.tracking.Tracker;
 import edu.meu.mgen.data.Food;

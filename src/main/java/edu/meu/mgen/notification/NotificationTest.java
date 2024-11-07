@@ -1,4 +1,6 @@
-import edu.meu.mgen.notification.Notification;
+package edu.meu.mgen.notification;
+
+
 import edu.meu.mgen.tracking.Tracker;
 import edu.meu.mgen.data.Food;
 import edu.meu.mgen.data.Exercise;
