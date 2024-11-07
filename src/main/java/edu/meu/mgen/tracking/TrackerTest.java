@@ -44,10 +44,10 @@ public class TrackerTest {
         System.out.println("Is Over Daily Intake? " + tracker.isOverDailyIntake(dailyCalorieLimit)); // 预期输出：true
 
         // 测试 5：获取所有食物条目
-        System.out.println("\nTest 5: Get All Food Entries");
-        tracker.getAllFoodEntries().forEach(food -> 
-            System.out.println("Food: " + food.getName() + ", Calories: " + food.getCalories() + ", Protein: " + food.getProtein() + ", Portion: " + food.getPortionSize())
-        );
+        // System.out.println("\nTest 5: Get All Food Entries");
+        // tracker.getAllFoodEntries().forEach(food -> 
+        //     System.out.println("Food: " + food.getName() + ", Calories: " + food.getCalories() + ", Protein: " + food.getProtein() + ", Portion: " + food.getPortionSize())
+        // );
 
         // 测试 6：获取所有运动条目
         System.out.println("\nTest 6: Get All Exercise Entries");
