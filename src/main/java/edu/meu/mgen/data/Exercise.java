@@ -58,9 +58,9 @@ public class Exercise {
         this.caloriesBurned = calculateCaloriesBurned(); // 更新卡路里消耗
     }
 
-    public String getIntensity() {
-        return intensity;
-    }
+    // public String getIntensity() {
+    //     return intensity;
+    // }
 
     public void setIntensity(String intensity) {
         this.intensity = intensity;

@@ -4,11 +4,11 @@ import java.util.*;
 
 public class Food {
 
-    // Food class
-    static class Food {
         private String name;
         private double cal; // Calories per pound
         private double prot; // Protein per pound
+        // 脂肪
+        // 碳水化合物
 
         // Constructor
         public Food(String name, double cal, double prot) {
@@ -43,7 +43,7 @@ public class Food {
         public String toString() {
             return String.format("Food{name='%s', cal=%.2f, prot=%.2f g}", name, cal, prot);
         }
-    }
+    
 
     // Mixed food class
     static class MixedFood extends Food {
