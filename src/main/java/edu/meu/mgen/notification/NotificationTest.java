@@ -32,9 +32,9 @@ public class NotificationTest {
         // 测试 2：发送卡路里超限通知
         System.out.println("\nTest 2: Calorie Limit Exceeded Notification");
         double dailyCalorieLimit = 2000;
-        tracker.addFoodEntry(new Food("Pasta", 700, 15, "1 bowl")); // 添加食物记录，模拟摄入的卡路里
-        tracker.addFoodEntry(new Food("Salad", 300, 5, "1 plate"));
-        tracker.addFoodEntry(new Food("Soda", 1200, 0, "1 bottle")); // 总卡路里：2200
+        // tracker.addFoodEntry(new Food("Pasta", 700, 15, "1 bowl")); // 添加食物记录，模拟摄入的卡路里
+        // tracker.addFoodEntry(new Food("Salad", 300, 5, "1 plate"));
+        // tracker.addFoodEntry(new Food("Soda", 1200, 0, "1 bottle")); // 总卡路里：2200
         notification.sendCalorieLimitExceededNotification(user, tracker, dailyCalorieLimit);
 
         // 测试 3：发送卡路里目标达成通知
