@@ -23,9 +23,9 @@ public class TrackerTest {
 
         // 测试 1：添加食物条目并检查总卡路里摄入
         System.out.println("Test 1: Add Food Entries and Check Total Calories Intake");
-        tracker.addFoodEntry(new Food("Sandwich", 300, 12, "1 piece"));
-        tracker.addFoodEntry(new Food("Apple", 100, 0.5, "1 piece"));
-        tracker.addFoodEntry(new Food("Coffee", 50, 0, "1 cup"));
+        // tracker.addFoodEntry(new Food("Sandwich", 300, 12, "1 piece"));
+        // tracker.addFoodEntry(new Food("Apple", 100, 0.5, "1 piece"));
+        // tracker.addFoodEntry(new Food("Coffee", 50, 0, "1 cup"));
         System.out.println("Total Calories Intake: " + tracker.getTotalCaloriesIntake()); // 预期输出：450
 
         // 测试 2：添加运动条目并检查总卡路里消耗
@@ -44,10 +44,10 @@ public class TrackerTest {
         System.out.println("Is Over Daily Intake? " + tracker.isOverDailyIntake(dailyCalorieLimit)); // 预期输出：true
 
         // 测试 5：获取所有食物条目
-        // System.out.println("\nTest 5: Get All Food Entries");
-        // tracker.getAllFoodEntries().forEach(food -> 
-        //     System.out.println("Food: " + food.getName() + ", Calories: " + food.getCalories() + ", Protein: " + food.getProtein() + ", Portion: " + food.getPortionSize())
-        // );
+        System.out.println("\nTest 5: Get All Food Entries");
+        tracker.getAllFoodEntries().forEach(food -> 
+            System.out.println("Food: " + food.getName() + ", Calories: " + food.getCalories() + ", Protein: " + food.getProtein() + ", Portion: " + food.getPortion())
+        );
 
         // 测试 6：获取所有运动条目
         System.out.println("\nTest 6: Get All Exercise Entries");
