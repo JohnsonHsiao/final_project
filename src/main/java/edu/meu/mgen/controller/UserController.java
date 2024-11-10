@@ -24,6 +24,10 @@ public class UserController {
             model.addAttribute("height", currentUser.getHeight());
             model.addAttribute("weight", currentUser.getWeight());
             model.addAttribute("targetWeight", currentUser.getTargetWeight());
+            
+            double bmr = currentUser.calculateBMR(); // 直接計算 BMR
+            model.addAttribute("user", currentUser);
+            model.addAttribute("bmr", bmr); // 將 BMR 添加到模型中
             return "index"; // 返回主頁面
         }
         return "login"; // 未登入時返回首頁，顯示註冊和登入選項
