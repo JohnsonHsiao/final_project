@@ -24,11 +24,15 @@ public class Food {
             return name;
         }
 
+        public int getPortion() {
+            return portion;
+        }
+
         public double getCalories() {
             return cal * portion;
         }
 
-        public double getProtien() {
+        public double getProtein() {
             return protein * portion;
         }
 
