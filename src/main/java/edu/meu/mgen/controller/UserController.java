@@ -152,7 +152,7 @@ public class UserController {
                 .findFirst()
                 .orElse(null);
         if (selectedExercise != null && currentUser != null) {
-            selectedExercise.setIntensity(intensity); // 設置強度屬性
+            selectedExercise.setIntensity(intensity);
             currentUser.writeExerciseToCsv(selectedExercise, duration);
         }
         return "redirect:/";
