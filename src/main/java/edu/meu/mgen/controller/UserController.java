@@ -36,15 +36,20 @@ public class UserController {
     @GetMapping("/")
     public String home(HttpSession session, Model model) {
         if (session.getAttribute("loggedIn") != null && (boolean) session.getAttribute("loggedIn")) {
-            User user = (User) session.getAttribute("user");  // 從 session 中獲取用戶對象
-            model.addAttribute("user", user);
-            double bmr = user.calculateBMR();
-            model.addAttribute("bmr", bmr);
+            model.addAttribute("username", currentUser.getUsername());
+            model.addAttribute("age", currentUser.getAge());
+            model.addAttribute("gender", currentUser.getGender());
+            model.addAttribute("height", currentUser.getHeight());
+            model.addAttribute("weight", currentUser.getWeight());
+            model.addAttribute("targetWeight", currentUser.getTargetWeight());
+            
+            double bmr = currentUser.calculateBMR(); // 直接計算 BMR
+            model.addAttribute("user", currentUser);
+            model.addAttribute("bmr", bmr); // 將 BMR 添加到模型中
             return "index"; // 返回主頁面
         }
-        return "login"; // 未登入時返回登入頁面
+        return "login"; // 未登入時返回首頁，顯示註冊和登入選項
     }
-
 
     @GetMapping("/register")
     public String showRegisterPage() {
@@ -82,11 +87,16 @@ public class UserController {
     @PostMapping("/login")
     public String loginUser(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
         boolean isAuthenticated = userRegistration.authenticateUser(username, password);
-    
+
         if (isAuthenticated) {
             currentUser = userRegistration.getUserDetails(username);
             session.setAttribute("loggedIn", true);
-            session.setAttribute("user", currentUser);  // 把整個 User 對象保存到 session 中
+            session.setAttribute("username", currentUser.getUsername());
+            session.setAttribute("age", currentUser.getAge());
+            session.setAttribute("gender", currentUser.getGender());
+            session.setAttribute("height", currentUser.getHeight());
+            session.setAttribute("weight", currentUser.getWeight());
+            session.setAttribute("targetWeight", currentUser.getTargetWeight());
             return "redirect:/";
         } else {
             model.addAttribute("error", "Invalid username or password");
