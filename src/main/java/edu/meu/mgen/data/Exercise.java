@@ -39,6 +39,11 @@ public class Exercise {
     public String getIntensity() {
         return intensity;
     }
+
+    public void setIntensity(String intensity) {
+        this.intensity = intensity;
+    }
+    
     public double calculateTotalCaloriesBurned() {
         String key = name.toLowerCase() + "_" + intensity.toLowerCase();
         double caloriesBurnedPerMinute = calorieRates.getOrDefault(key, 5.0); // 默認每分鐘5卡路里
