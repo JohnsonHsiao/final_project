@@ -1,113 +1,56 @@
 package edu.meu.mgen.data;
 
-import java.util.HashMap;
-
 public class Food {
+    private String name;
+    private double servingSize; // 份量，以克或毫升為單位
+    private double caloriesPerServing; // 每份的卡路里
+    private double protein; // 每份的蛋白質含量，單位為克
+    private double fat; // 每份的脂肪含量，單位為克
+    private double carbohydrates; // 每份的碳水化合物含量，單位為克
 
-        private String name;
-        private double cal; // Calories per pound
-        private double protein; // Protein per pound
-        private double carbs;
-        private double fat;
-        private int portion;
-
-        // Constructor
-        public Food(String name, double cal, double protein, double carbs, double fat) {
-            this.name = name;
-            this.cal = cal;
-            this.protein = protein;
-            this.carbs = carbs;
-            this.fat = fat;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public int getPortion() {
-            return portion;
-        }
-
-        public double getCalories() {
-            return cal * portion;
-        }
-
-        public double getProtein() {
-            return protein * portion;
-        }
-
-        // Calculate carbs
-        public double getCarbs() {
-            return carbs * portion;
-        }
-
-        // Calculate fat
-        public double getFat() {
-            return fat * portion;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("Food{name='%s', cal=%.2f, prot=%.2f g}", name, cal, protein);
-        }
+    // Constructor
+    public Food(String name, double servingSize, double caloriesPerServing, double protein, double fat, double carbohydrates) {
+        this.name = name;
+        this.servingSize = servingSize;
+        this.caloriesPerServing = caloriesPerServing;
+        this.protein = protein;
+        this.fat = fat;
+        this.carbohydrates = carbohydrates;
     }
 
-//     // Mixed food class
-//     static class MixedFood extends Food {
-//         private List<Food> ingredients;
+    // Getters
+    public String getName() {
+        return name;
+    }
 
-//         public MixedFood(String name, List<Food> ingredients, double cal, double prot) {
-//             super(name, cal, prot);
-//             this.ingredients = ingredients;
-//         }
+    public double getServingSize() {
+        return servingSize;
+    }
 
-//         private static double sumCal(List<Food> ingredients) {
-//             return ingredients.stream().mapToDouble(Food::getCal).sum();
-//         }
+    public double getCaloriesPerServing() {
+        return caloriesPerServing;
+    }
 
-//         private static double sumProt(List<Food> ingredients) {
-//             return ingredients.stream().mapToDouble(Food::getProt).sum();
-//         }
+    public double getProtein() {
+        return protein;
+    }
 
-//         @Override
-//         public String toString() {
-//             return String.format("MixedFood{name='%s', cal=%.2f, prot=%.2f g, ingredients=%s}",
-//                     // getName(), getCal(), getProt(), ingredients);
-//         }
-//     }
+    public double getFat() {
+        return fat;
+    }
 
-//     // Initialize food data
-//     private static Map<String, Food> initFoods() {
-//         Food potato = new Food("Potato", 680.0, 7.5);
-//         Food latte = new Food("Latte", 146.0, 7.9);
-//         Food pizza = new Food("Pizza", 484.0, 16.0);
-//         Food broccoli = new Food("Broccoli", 15.0, 1.3);
+    public double getCarbohydrates() {
+        return carbohydrates;
+    }
 
-//         MixedFood fries = new MixedFood("Fries", List.of(potato), 250.0, 4.0);
-//         MixedFood americano = new MixedFood("Americano", List.of(latte), -146.0, -7.9);
-//         MixedFood cheesePizza = new MixedFood("Cheese Pizza", List.of(pizza), 300.0, 12.0);
-//         MixedFood stirFriedBroccoli = new MixedFood("Stir-fried Broccoli", List.of(broccoli), 75.0, 2.0);
+    // 計算總共攝取的卡路里，根據所吃的份量
+    public double calculateTotalCalories(double servingCount) {
+        return servingCount * caloriesPerServing;
+    }
 
-//         Map<String, Food> foodMap = new HashMap<>();
-//         for (Food food : List.of(potato, latte, pizza, broccoli, fries, americano, cheesePizza, stirFriedBroccoli)) {
-//             foodMap.put(food.getName().toLowerCase(), food);
-//         }
+    @Override
+    public String toString() {
+        return String.format("Food{name='%s', cal=%.2f, prot=%.2f g}", name, caloriesPerServing, protein);
+    }
+}
 
-//         return foodMap;
-//     }
-
-//     // Query food information
-//     private static void query(Map<String, Food> foodMap, String name, double weight) {
-//         Food food = foodMap.get(name.toLowerCase());
-//         if (food != null) {
-//             double cal = food.calcCal(weight);
-//             double prot = food.calcProt(weight);
-//             System.out.printf("Food: %s (%.2f lbs)%n", food.getName(), weight);
-//             System.out.printf("Calories: %.2f kcal, Protein: %.2f g%n", cal, prot);
-//         } else {
-//             System.out.println("Food not found: " + name);
-//             System.out.println("Available foods:");
-//             foodMap.keySet().forEach(System.out::println);
-//         }
-//     }
-// }

@@ -1,19 +1,33 @@
 package edu.meu.mgen.user;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.meu.mgen.data.Exercise;
+import edu.meu.mgen.data.Food;
+
 public class User {
     private String username;
     private String password; // 存儲加密後的密碼
-    private String email;
+    // private String email;
     private int age;
     private String gender;
     private double height;
     private double weight;
     private double targetWeight;
+    private List<Food> foodRecords = new ArrayList<>();
+    private List<Exercise> exerciseRecords = new ArrayList<>();
+
 
     public User(String username, String password, String email, int age, String gender, double height, double weight, double targetWeight) {
         this.username = username;
         this.password = password;
-        this.email = email;
+        // this.email = email;
         this.age = age;
         this.gender = gender;
         this.height = height;
@@ -66,9 +80,92 @@ public class User {
     }
     public double calculateBMR() {
         if (gender.equalsIgnoreCase("male")) {
-            return 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+            return Math.round(88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age));
         } else {
-            return 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+            return Math.round(447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age));
         }
     }
+    public void writeFoodToCsv(Food food, double servingCount) {
+        String directoryPath = "data/" + username;
+        String filePath = directoryPath + "/food_records.csv";
+
+        // 確保資料夾存在
+        File directory = new File(directoryPath);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        File file = new File(filePath);
+        boolean fileExists = file.exists();
+    
+        try (FileWriter writer = new FileWriter(filePath, true)) {
+        // 如果文件不存在，添加標題行
+        if (!fileExists) {
+            writer.append("Name,Calories,Protein,Carbs,Fat,Serving Size,Serving Count,Total Calories,Timestamp\n");
+        }
+        // 添加食物記錄
+        double totalCalories = food.calculateTotalCalories(servingCount);
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        
+        writer.append(food.getName()).append(",")
+              .append(String.valueOf(food.getCaloriesPerServing())).append(",")
+              .append(String.valueOf(food.getProtein())).append(",")
+              .append(String.valueOf(food.getCarbohydrates())).append(",")
+              .append(String.valueOf(food.getFat())).append(",")
+              .append(String.valueOf(food.getServingSize())).append(",")
+              .append(String.valueOf(servingCount)).append(",")
+              .append(String.valueOf(totalCalories)).append(",")
+              .append(timestamp).append("\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+
+    // Write exercise record to CSV
+    public void writeExerciseToCsv(Exercise exercise, double duration) {
+        String directoryPath = "data/" + username;
+        String filePath = directoryPath + "/exercise_records.csv";
+
+        // 確保資料夾存在
+        File directory = new File(directoryPath);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        File file = new File(filePath);
+        boolean fileExists = file.exists();
+
+        try (FileWriter writer = new FileWriter(filePath, true)) {
+            // 如果文件不存在，添加標題行
+            if (!fileExists) {
+                writer.append("Name,Intensity,Calories Burned Per Minute,Duration,Total Calories Burned,Timestamp\n");
+            }
+
+            // 添加運動記錄
+            double totalCaloriesBurned = exercise.calculateTotalCaloriesBurned();
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+            writer.append(exercise.getName()).append(",")
+                .append(exercise.getIntensity()).append(",")
+                .append(String.valueOf(exercise.calculateTotalCaloriesBurned())).append(",")
+                .append(String.valueOf(duration)).append(",")
+                .append(String.valueOf(totalCaloriesBurned)).append(",")
+                .append(timestamp).append("\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public double calculateTotalCaloriesConsumed() {
+        return foodRecords.stream().mapToDouble(food -> food.calculateTotalCalories(1)).sum();
+    }
+
+    public double calculateTotalCaloriesBurned() {
+        return exerciseRecords.stream().mapToDouble(exercise -> exercise.calculateTotalCaloriesBurned()).sum();
+    }
+    
 }
+
+
+

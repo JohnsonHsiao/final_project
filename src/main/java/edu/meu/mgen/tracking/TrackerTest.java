@@ -46,7 +46,7 @@ public class TrackerTest {
         // 测试 5：获取所有食物条目
         System.out.println("\nTest 5: Get All Food Entries");
         tracker.getAllFoodEntries().forEach(food -> 
-            System.out.println("Food: " + food.getName() + ", Calories: " + food.getCalories() + ", Protein: " + food.getProtein() + ", Portion: " + food.getPortion())
+            System.out.println("Food: " + food.getName() + ", Calories: " + food.getCaloriesPerServing() + ", Protein: " + food.getProtein() + ", Portion: " + food.getServingSize())
         );
 
         // 测试 6：获取所有运动条目
