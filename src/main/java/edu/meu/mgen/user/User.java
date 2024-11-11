@@ -1,5 +1,16 @@
 package edu.meu.mgen.user;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.meu.mgen.data.Exercise;
+import edu.meu.mgen.data.Food;
+
 public class User {
     private String username;
     private String password; // 存儲加密後的密碼
@@ -9,6 +20,9 @@ public class User {
     private double height;
     private double weight;
     private double targetWeight;
+    private List<Food> foodRecords = new ArrayList<>();
+    private List<Exercise> exerciseRecords = new ArrayList<>();
+
 
     public User(String username, String password, String email, int age, String gender, double height, double weight, double targetWeight) {
         this.username = username;
@@ -71,4 +85,35 @@ public class User {
             return 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
         }
     }
+    public void writeFoodToCsv(Food food, double servingCount) {
+        String filePath = "data/" + username + "/food_records.csv";
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath, true))) {
+            String record = String.format("%s,%f,%f,%f,%f,%s", food.getName(), servingCount, food.getCaloriesPerServing(), 
+                food.getProtein(), food.getFat(), food.getCaloriesPerServing());
+            writer.println(record);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Write exercise record to CSV
+    public void writeExerciseToCsv(Exercise exercise, double duration) {
+        String filePath = "data/" + username + "/exercise_records.csv";
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath, true))) {
+            String record = String.format("%s,%f,%f", exercise.getName(), duration, exercise.calculateTotalCaloriesBurned());
+            writer.println(record);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public double calculateTotalCaloriesConsumed() {
+        return foodRecords.stream().mapToDouble(food -> food.calculateTotalCalories(1)).sum();
+    }
+
+    public double calculateTotalCaloriesBurned() {
+        return exerciseRecords.stream().mapToDouble(exercise -> exercise.calculateTotalCaloriesBurned()).sum();
+    }
+    
 }
+

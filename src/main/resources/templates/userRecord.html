@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Records</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Records</h1>
+        <h2>Food Records</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Food Name</th>
+                    <th>Serving Count</th>
+                    <th>Total Calories</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Iterate over food records -->
+                <tr th:each="foodRecord : ${foodRecords}">
+                    <td th:text="${foodRecord.name}"></td>
+                    <td th:text="${foodRecord.servingCount}"></td>
+                    <td th:text="${foodRecord.totalCalories}"></td>
+                    <td th:text="${foodRecord.date}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Exercise Records</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Exercise Name</th>
+                    <th>Duration (minutes)</th>
+                    <th>Calories Burned</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Iterate over exercise records -->
+                <tr th:each="exerciseRecord : ${exerciseRecords}">
+                    <td th:text="${exerciseRecord.name}"></td>
+                    <td th:text="${exerciseRecord.duration}"></td>
+                    <td th:text="${exerciseRecord.caloriesBurned}"></td>
+                    <td th:text="${exerciseRecord.date}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a href="/" class="button">Back to Home</a>
+    </div>
+</body>
+</html>

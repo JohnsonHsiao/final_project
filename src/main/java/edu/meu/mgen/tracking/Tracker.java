@@ -22,13 +22,13 @@ public class Tracker {
     // Add a food entry and update the total calories intake
     public void addFoodEntry(Food food) {
         foodEntries.add(food);
-        totalCaloriesIntake += food.getCalories();
+        totalCaloriesIntake += food.getCaloriesPerServing();
     }
 
     // Add an exercise entry and update the total calories burned
     public void addExerciseEntry(Exercise exercise) {
         exerciseEntries.add(exercise);
-        totalCaloriesBurned += exercise.getCaloriesBurned();
+        totalCaloriesBurned += exercise.calculateTotalCaloriesBurned();
     }
 
     // Calculate net calories (intake minus burned)
