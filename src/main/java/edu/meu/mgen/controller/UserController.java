@@ -11,7 +11,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -158,21 +160,34 @@ public class UserController {
     @GetMapping("/userRecord")
     public String userRecord(Model model) {
         if (currentUser != null) {
-            List<String> foodRecords = readCsvRecords(currentUser.getUsername(), "food_records.csv");
-            List<String> exerciseRecords = readCsvRecords(currentUser.getUsername(), "exercise_records.csv");
+            model.addAttribute("user", currentUser);
+            List<Map<String, String>> foodRecords = readCsvRecords(currentUser.getUsername(), "food_records.csv");
+            List<Map<String, String>> exerciseRecords = readCsvRecords(currentUser.getUsername(), "exercise_records.csv");
             model.addAttribute("foodRecords", foodRecords);
             model.addAttribute("exerciseRecords", exerciseRecords);
+            System.out.println("Food Records: " + foodRecords);
+            System.out.println("Exercise Records: " + exerciseRecords);
         }
         return "user_record";
     }
 
-    private List<String> readCsvRecords(String username, String fileName) {
-        List<String> records = new ArrayList<>();
+    private List<Map<String, String>> readCsvRecords(String username, String fileName) {
+        List<Map<String, String>> records = new ArrayList<>();
         String filePath = "data/" + username + "/" + fileName;
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                records.add(line);
+            String headerLine = reader.readLine();
+            if (headerLine != null) {
+                String[] headers = headerLine.split(",");
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] values = line.split(",");
+                    Map<String, String> record = new HashMap<>();
+                    for (int i = 0; i < headers.length; i++) {
+                        record.put(headers[i], values[i]);
+                    }
+                    records.add(record);
+                    System.out.println("Read record: " + record);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
