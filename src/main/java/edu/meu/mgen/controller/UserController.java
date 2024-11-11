@@ -45,12 +45,12 @@ public class UserController {
             model.addAttribute("weight", currentUser.getWeight());
             model.addAttribute("targetWeight", currentUser.getTargetWeight());
             
-            double bmr = currentUser.calculateBMR(); // 直接計算 BMR
+            double bmr = currentUser.calculateBMR(); // cal BMR
             model.addAttribute("user", currentUser);
-            model.addAttribute("bmr", bmr); // 將 BMR 添加到模型中
-            return "index"; // 返回主頁面
+            model.addAttribute("bmr", bmr);
+            return "index"; // return to index page
         }
-        return "login"; // 未登入時返回首頁，顯示註冊和登入選項
+        return "login"; // if not logged in, return to login page
     }
 
     @GetMapping("/register")
@@ -83,7 +83,7 @@ public class UserController {
 
     @GetMapping("/login")
     public String showLoginPage() {
-        return "login"; // 返回登入頁面
+        return "login";
     }
 
     @PostMapping("/login")
@@ -106,20 +106,20 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user/bmr")
-    public String getUserBMR(Model model, HttpSession session) {
-        if (session.getAttribute("loggedIn") == null || !(boolean) session.getAttribute("loggedIn")) {
-            return "redirect:/login";
-        }
-        double bmr = currentUser.calculateBMR();
-        model.addAttribute("age", currentUser.getAge());
-        model.addAttribute("gender", currentUser.getGender());
-        model.addAttribute("height", currentUser.getHeight());
-        model.addAttribute("weight", currentUser.getWeight());
-        model.addAttribute("targetWeight", currentUser.getTargetWeight());
-        model.addAttribute("bmr", bmr);
-        return "result"; // 返回結果頁面
-    }
+    // @GetMapping("/user/bmr")
+    // public String getUserBMR(Model model, HttpSession session) {
+    //     if (session.getAttribute("loggedIn") == null || !(boolean) session.getAttribute("loggedIn")) {
+    //         return "redirect:/login";
+    //     }
+    //     double bmr = currentUser.calculateBMR();
+    //     model.addAttribute("age", currentUser.getAge());
+    //     model.addAttribute("gender", currentUser.getGender());
+    //     model.addAttribute("height", currentUser.getHeight());
+    //     model.addAttribute("weight", currentUser.getWeight());
+    //     model.addAttribute("targetWeight", currentUser.getTargetWeight());
+    //     model.addAttribute("bmr", bmr);
+    //     return "result";
+    // }
 
     @GetMapping("/selectFood")
     public String selectFood(Model model) {
@@ -166,8 +166,9 @@ public class UserController {
             List<Map<String, String>> exerciseRecords = readCsvRecords(currentUser.getUsername(), "exercise_records.csv");
             model.addAttribute("foodRecords", foodRecords);
             model.addAttribute("exerciseRecords", exerciseRecords);
-            System.out.println("Food Records: " + foodRecords);
-            System.out.println("Exercise Records: " + exerciseRecords);
+            // for debugging
+            // System.out.println("Food Records: " + foodRecords);
+            // System.out.println("Exercise Records: " + exerciseRecords);
         }
         return "user_record";
     }
@@ -187,7 +188,8 @@ public class UserController {
                         record.put(headers[i], values[i]);
                     }
                     records.add(record);
-                    System.out.println("Read record: " + record);
+                    // for debugging
+                    // System.out.println("Read record: " + record);
                 }
             }
         } catch (IOException e) {
