@@ -123,35 +123,30 @@ public class User {
     
 
     // Write exercise record to CSV
-    public void writeExerciseToCsv(Exercise exercise, double duration) {
+    public void writeExerciseToCsv(Exercise exercise) {
         String directoryPath = "data/" + username;
         String filePath = directoryPath + "/exercise_records.csv";
-
-        // 確保資料夾存在
+    
         File directory = new File(directoryPath);
         if (!directory.exists()) {
             directory.mkdirs();
         }
-
-        File file = new File(filePath);
-        boolean fileExists = file.exists();
-
+    
         try (FileWriter writer = new FileWriter(filePath, true)) {
-            // 如果文件不存在，添加標題行
-            if (!fileExists) {
+            // 如果文件不存在，添加标题行
+            if (!new File(filePath).exists()) {
                 writer.append("Name,Intensity,Calories Burned Per Minute,Duration,Total Calories Burned,Timestamp\n");
             }
-
-            // 添加運動記錄
-            double totalCaloriesBurned = exercise.calculateTotalCaloriesBurned();
+    
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
+    
+            double totalCaloriesBurned = exercise.calculateCaloriesBurned();
             writer.append(exercise.getName()).append(",")
-                .append(exercise.getIntensity()).append(",")
-                .append(String.valueOf(exercise.calculateTotalCaloriesBurned())).append(",")
-                .append(String.valueOf(duration)).append(",")
-                .append(String.valueOf(totalCaloriesBurned)).append(",")
-                .append(timestamp).append("\n");
+                    .append(exercise.getIntensity()).append(",")
+                    .append(String.valueOf(exercise.getCaloriesBurnedPerMinute())).append(",")
+                    .append(String.valueOf(exercise.getDuration())).append(",")
+                    .append(String.valueOf(totalCaloriesBurned)).append(",")
+                    .append(timestamp).append("\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -162,7 +157,7 @@ public class User {
     }
 
     public double calculateTotalCaloriesBurned() {
-        return exerciseRecords.stream().mapToDouble(exercise -> exercise.calculateTotalCaloriesBurned()).sum();
+        return exerciseRecords.stream().mapToDouble(exercise -> exercise.calculateCaloriesBurned()).sum();
     }
     
 }

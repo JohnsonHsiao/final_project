@@ -39,7 +39,7 @@ public class NotificationTest {
 
         // 测试 3：发送卡路里目标达成通知
         System.out.println("\nTest 3: Calorie Goal Reached Notification");
-        tracker.addExerciseEntry(new Exercise("Running", 60, "High")); // 模拟运动消耗的卡路里
+        // tracker.addExerciseEntry(new Exercise("Running", 60, "High")); // 模拟运动消耗的卡路里
         double targetCalories = 1800;
         notification.sendCalorieGoalReachedNotification(user, tracker, targetCalories);
 

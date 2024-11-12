@@ -28,7 +28,7 @@ public class Tracker {
     // Add an exercise entry and update the total calories burned
     public void addExerciseEntry(Exercise exercise) {
         exerciseEntries.add(exercise);
-        totalCaloriesBurned += exercise.calculateTotalCaloriesBurned();
+        totalCaloriesBurned += exercise.calculateCaloriesBurned();
     }
 
     // Calculate net calories (intake minus burned)
