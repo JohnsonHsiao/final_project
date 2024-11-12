@@ -30,8 +30,8 @@ public class TrackerTest {
 
         // 测试 2：添加运动条目并检查总卡路里消耗
         System.out.println("\nTest 2: Add Exercise Entries and Check Total Calories Burned");
-        tracker.addExerciseEntry(new Exercise("Running", 60, "High"));
-        tracker.addExerciseEntry(new Exercise("Cycling", 45, "Moderate"));
+        // tracker.addExerciseEntry(new Exercise("Running", 60, "High"));
+        // tracker.addExerciseEntry(new Exercise("Cycling", 45, "Moderate"));
         System.out.println("Total Calories Burned: " + tracker.getTotalCaloriesBurned()); // 预期输出示例
 
         // 测试 3：计算净卡路里

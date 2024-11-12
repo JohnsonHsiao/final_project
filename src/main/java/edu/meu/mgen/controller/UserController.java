@@ -146,14 +146,12 @@ public class UserController {
     }
 
     @PostMapping("/addExerciseRecord")
-    public String addExerciseRecord(@RequestParam String exercise, @RequestParam String intensity, @RequestParam double duration) {
-        Exercise selectedExercise = exerciseData.getExerciseList().stream()
-                .filter(e -> e.getName().equals(exercise))
-                .findFirst()
-                .orElse(null);
+    public String addExerciseRecord(@RequestParam String exercise, @RequestParam double duration, @RequestParam String intensity) {
+        Exercise selectedExercise = exerciseData.getExerciseByName(exercise);
         if (selectedExercise != null && currentUser != null) {
             selectedExercise.setIntensity(intensity);
-            currentUser.writeExerciseToCsv(selectedExercise, duration);
+            selectedExercise.setDuration(duration);
+            currentUser.writeExerciseToCsv(selectedExercise);
         }
         return "redirect:/";
     }
