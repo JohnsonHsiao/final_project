@@ -2,11 +2,11 @@ package edu.meu.mgen.data;
 
 public class Food {
     private String name;
-    private double servingSize; // 份量，以克或毫升為單位
-    private double caloriesPerServing; // 每份的卡路里
-    private double protein; // 每份的蛋白質含量，單位為克
-    private double fat; // 每份的脂肪含量，單位為克
-    private double carbohydrates; // 每份的碳水化合物含量，單位為克
+    private double servingSize; // g or ml per serving
+    private double caloriesPerServing; // calories per serving
+    private double protein; // protein per serving in grams
+    private double fat; // fat per serving in grams
+    private double carbohydrates; // carbohydrates per serving in grams
 
     // Constructor
     public Food(String name, double servingSize, double caloriesPerServing, double protein, double fat, double carbohydrates) {
