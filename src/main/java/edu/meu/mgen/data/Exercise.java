@@ -6,6 +6,7 @@ public class Exercise {
     private String intensity;
     private double duration;
 
+    public Exercise() {}
     // 构造函数，用于初始化运动名称和每分钟燃烧的卡路里
     public Exercise(String name, double caloriesBurnedPerMinute) {
         this.name = name;
@@ -15,6 +16,9 @@ public class Exercise {
     // 获取运动名称
     public String getName() {
         return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 
     // 设置运动强度
@@ -51,6 +55,9 @@ public class Exercise {
     // calculate calories burned per minute
     public double getCaloriesBurnedPerMinute() {
         return caloriesBurnedPerMinute;
+    }
+    public void setCaloriesPerMinute(double caloriesBurnedPerMinute) {
+        this.caloriesBurnedPerMinute = caloriesBurnedPerMinute;
     }
 
     // 

@@ -101,14 +101,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="exerciseRecord : ${exerciseRecords}">
-                    <td th:text="${exerciseRecord['Timestamp']}"></td>
-                    <td th:text="${exerciseRecord['Name']}"></td>
-                    <td th:text="${exerciseRecord['Intensity']}"></td>
-                    <td th:text="${exerciseRecord['Duration']}"></td>
-                    <td th:text="${exerciseRecord['Calories Burned Per Minute']}"></td>
-                    <td th:text="${exerciseRecord['Total Calories Burned']}"></td>
-                </tr>
+            <tr th:each="exerciseRecord : ${exerciseRecords}">
+                <td th:text="${exerciseRecord['Timestamp']}"></td>
+                <td th:text="${exerciseRecord['Name']}"></td>
+                <td th:text="${exerciseRecord['Intensity']}"></td>
+                <td th:text="${exerciseRecord['Duration']}"></td>
+                <td th:text="${exerciseRecord['Calories Burned Per Minute']}"></td>
+                <td th:text="${exerciseRecord['Total Calories Burned']}"></td>
+            </tr>
             </tbody>
         </table>
 
