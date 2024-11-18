@@ -44,7 +44,7 @@ public class UserController {
             model.addAttribute("height", currentUser.getHeight());
             model.addAttribute("weight", currentUser.getWeight());
             model.addAttribute("targetWeight", currentUser.getTargetWeight());
-            
+
             double bmr = currentUser.calculateBMR(); // cal BMR
             model.addAttribute("user", currentUser);
             model.addAttribute("bmr", bmr);
@@ -128,16 +128,38 @@ public class UserController {
     }
 
     @PostMapping("/addFoodRecord")
-    public String addFoodRecord(@RequestParam String food, @RequestParam double servingCount) {
-        Food selectedFood = foodData.getFoodList().stream()
-                .filter(f -> f.getName().equals(food))
-                .findFirst()
-                .orElse(null);
+    public String addFoodRecord(
+            @RequestParam String food,
+            @RequestParam double servingCount,
+            @RequestParam(value = "customFood", required = false) String customFood
+    ) {
+        Food selectedFood;
+
+        if ("other".equalsIgnoreCase(food)) {
+            if (customFood != null && !customFood.trim().isEmpty()) {
+                selectedFood = new Food();
+                selectedFood.setName(customFood.trim());
+                selectedFood.setCaloriesPerServing(0.0); // 设置默认值为空或0
+                selectedFood.setProtein(0.0);
+                selectedFood.setCarbohydrates(0.0);
+                selectedFood.setFat(0.0);
+                selectedFood.setServingSize(0.0);
+            } else {
+                return "redirect:/error"; // 如果用户未填写名称，重定向到错误页面
+            }
+        } else {
+            selectedFood = foodData.getFoodList().stream()
+                    .filter(f -> f.getName().equals(food))
+                    .findFirst()
+                    .orElse(null);
+        }
+
         if (selectedFood != null && currentUser != null) {
             currentUser.writeFoodToCsv(selectedFood, servingCount);
         }
         return "redirect:/";
     }
+
 
     @GetMapping("/selectExercise")
     public String selectExercise(Model model) {
@@ -146,8 +168,31 @@ public class UserController {
     }
 
     @PostMapping("/addExerciseRecord")
-    public String addExerciseRecord(@RequestParam String exercise, @RequestParam double duration, @RequestParam String intensity) {
-        Exercise selectedExercise = exerciseData.getExerciseByName(exercise);
+
+    public String addExerciseRecord(
+            @RequestParam String exercise,
+            @RequestParam String intensity,
+            @RequestParam double duration,
+            @RequestParam(value = "customExercise", required = false) String customExercise,
+            @RequestParam(value = "customCalories", required = false) Double customCalories
+    ) {
+        Exercise selectedExercise;
+
+        if ("other".equalsIgnoreCase(exercise)) {
+            if (customExercise != null && !customExercise.trim().isEmpty() && customCalories != null) {
+                selectedExercise = new Exercise();
+                selectedExercise.setName(customExercise.trim());
+                selectedExercise.setCaloriesBurnedPerMinute(customCalories);
+            } else {
+                return "redirect:/error"; // 如果输入无效，重定向到错误页面
+            }
+        } else {
+            selectedExercise = exerciseData.getExerciseList().stream()
+                    .filter(e -> e.getName().equals(exercise))
+                    .findFirst()
+                    .orElse(null);
+        }
+
         if (selectedExercise != null && currentUser != null) {
             selectedExercise.setIntensity(intensity);
             selectedExercise.setDuration(duration);
@@ -183,11 +228,10 @@ public class UserController {
                     String[] values = line.split(",");
                     Map<String, String> record = new HashMap<>();
                     for (int i = 0; i < headers.length; i++) {
-                        record.put(headers[i], values[i]);
+                        record.put(headers[i], i < values.length ? values[i] : "Unknown");
                     }
                     records.add(record);
-                    // for debugging
-                    // System.out.println("Read record: " + record);
+                    //System.out.println("Read record: " + record);  调试输出
                 }
             }
         } catch (IOException e) {
@@ -195,6 +239,7 @@ public class UserController {
         }
         return records;
     }
+
 
     @GetMapping("/logout")
     public String logout() {

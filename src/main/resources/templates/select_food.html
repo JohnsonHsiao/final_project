@@ -14,6 +14,7 @@
             height: 100vh;
             margin: 0;
         }
+
         .container {
             background-color: #ffffff;
             padding: 20px;
@@ -29,13 +30,32 @@
         <h1>Select Food Intake</h1>
         <form action="/addFoodRecord" method="post">
             <label for="food">Food:</label>
-            <select id="food" name="food" required>
+            <select id="food" name="food" required onchange="toggleCustomFood(this)">
                 <option th:each="food : ${foodList}" th:value="${food.name}" th:text="${food.name}"></option>
+                <option value="other">Other</option>
             </select>
+
+            <div id="custom-food-field" style="display: none;">
+                <label for="customFood">Custom Food:</label>
+                <input type="text" id="customFood" name="customFood" placeholder="Enter food name">
+            </div>
+
             <label for="servingCount">Serving Count:</label>
-            <input type="number" id="servingCount" name="servingCount" required>
+            <input type="number" id="servingCount" name="servingCount" step="0.1" required>
+
             <button type="submit">Add Food Record</button>
         </form>
     </div>
+
+    <script>
+        function toggleCustomFood(select) {
+            const customField = document.getElementById('custom-food-field');
+            if (select.value === 'other') {
+                customField.style.display = 'block';
+            } else {
+                customField.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
