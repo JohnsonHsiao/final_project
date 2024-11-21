@@ -1,64 +1,110 @@
-package edu.meu.mgen.tracking;
+// import edu.meu.mgen.data.Food;
+// import edu.meu.mgen.data.Exercise;
+// import edu.meu.mgen.user.User;
+// import edu.meu.mgen.tracking.Tracker;
+// import org.junit.jupiter.api.AfterEach;
+// import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.Test;
 
-import edu.meu.mgen.notification.Notification;
-import edu.meu.mgen.tracking.Tracker;
-import edu.meu.mgen.data.Food;
-import edu.meu.mgen.data.Exercise;
-import edu.meu.mgen.user.User;
+// import java.io.BufferedWriter;
+// import java.io.File;
+// import java.io.FileWriter;
+// import java.io.IOException;
 
-public class TrackerTest {
+// import static org.junit.jupiter.api.Assertions.*;
 
-    public static void main(String[] args) {
-        // 创建测试用户
-        User user = new User("JohnDoe", "password123", "johndoe@example.com", 30, "Male", 180.0, 185.0, 165.0);
+// class TrackerTest {
 
-        // 设置体重目标相关的参数：初始体重、目标体重、总周数、开始日期
-        double initialWeight = 185.0;
-        double targetWeight = 165.0;
-        int totalWeeks = 20;
+//     private static final String TEST_USER = "test_user";
+//     private static final String TEST_DATA_DIR = "data/" + TEST_USER;
+//     private Tracker tracker;
+//     private User testUser;
 
-        // 创建 Tracker 和 Notification 实例
-        Tracker tracker = new Tracker();
-        Notification notification = new Notification();
+//     @BeforeEach
+//     void setUp() {
+//         // Create a test user and initialize Tracker
+//         testUser = new User(TEST_USER, "password123", "test@example.com", 30, "male", 175, 80, 70);
+//         tracker = new Tracker(TEST_USER, testUser);
 
-        // 测试 1：添加食物条目并检查总卡路里摄入
-        System.out.println("Test 1: Add Food Entries and Check Total Calories Intake");
-        // tracker.addFoodEntry(new Food("Sandwich", 300, 12, "1 piece"));
-        // tracker.addFoodEntry(new Food("Apple", 100, 0.5, "1 piece"));
-        // tracker.addFoodEntry(new Food("Coffee", 50, 0, "1 cup"));
-        System.out.println("Total Calories Intake: " + tracker.getTotalCaloriesIntake()); // 预期输出：450
+//         cleanDirectory();
+//         createTestFiles();
+//     }
 
-        // 测试 2：添加运动条目并检查总卡路里消耗
-        System.out.println("\nTest 2: Add Exercise Entries and Check Total Calories Burned");
-        // tracker.addExerciseEntry(new Exercise("Running", 60, "High"));
-        // tracker.addExerciseEntry(new Exercise("Cycling", 45, "Moderate"));
-        System.out.println("Total Calories Burned: " + tracker.getTotalCaloriesBurned()); // 预期输出示例
+//     @AfterEach
+//     void tearDown() {
+//         // Clean up test files and directory
+//         cleanDirectory();
+//     }
 
-        // 测试 3：计算净卡路里
-        System.out.println("\nTest 3: Calculate Net Calories");
-        System.out.println("Net Calories: " + tracker.calculateNetCalories());
+//     @Test
+//     void testNetCaloriesCalculation() {
+//         // Test that net calories are calculated correctly
+//         assertEquals(300.0, tracker.calculateNetCalories(), 0.01, "Net calories should be 300 kcal");
+//     }
 
-        // 测试 4：检查是否超出每日卡路里摄入限额
-        System.out.println("\nTest 4: Check if Over Daily Intake Limit");
-        double dailyCalorieLimit = 400;
-        System.out.println("Is Over Daily Intake? " + tracker.isOverDailyIntake(dailyCalorieLimit)); // 预期输出：true
+//     @Test
+//     void testTrackFood() {
+//         // Test that tracking food updates totalCaloriesIntake
+//         Food food = new Food("Pizza", 200, 500, 20, 10, 50);
+//         tracker.trackFood(food, 2); // 2 servings
+//         assertEquals(1300.0, tracker.calculateNetCalories(), 0.01, "Net calories should increase by 1000 kcal");
+//     }
 
-        // 测试 5：获取所有食物条目
-        System.out.println("\nTest 5: Get All Food Entries");
-        tracker.getAllFoodEntries().forEach(food -> 
-            System.out.println("Food: " + food.getName() + ", Calories: " + food.getCaloriesPerServing() + ", Protein: " + food.getProtein() + ", Portion: " + food.getServingSize())
-        );
+//     @Test
+//     void testTrackExercise() {
+//         // Test that tracking exercise updates totalCaloriesBurned
+//         Exercise exercise = new Exercise("Running", 15);
+//         exercise.setDuration(60); // 60 minutes
+//         tracker.trackExercise(exercise);
+//         assertEquals(-600.0, tracker.calculateNetCalories(), 0.01, "Net calories should decrease by 900 kcal");
+//     }
 
-        // 测试 6：获取所有运动条目
-        System.out.println("\nTest 6: Get All Exercise Entries");
-        tracker.getAllExerciseEntries().forEach(exercise -> 
-            System.out.println("Exercise: " + exercise.getName() + ", Duration: " + exercise.getDuration() + ", Intensity: " + exercise.getIntensity())
-        );
+//     @Test
+//     void testNetCaloriesListener() {
+//         // Test that the net calorie listener is triggered correctly
+//         tracker.setNetCaloriesListener(netCalories -> {
+//             assertEquals(400.0, netCalories, 0.01, "Listener should detect net calories as 400 kcal");
+//         });
 
-        // 测试 7：重置每日跟踪数据
-        System.out.println("\nTest 7: Reset Daily Tracking");
-        tracker.resetDailyTracking();
-        System.out.println("Total Calories Intake After Reset: " + tracker.getTotalCaloriesIntake()); // 预期输出：0
-        System.out.println("Total Calories Burned After Reset: " + tracker.getTotalCaloriesBurned()); // 预期输出：0
-    }
-}
+//         Food food = new Food("Salad", 100, 100, 5, 2, 10);
+//         tracker.trackFood(food, 1); // Add 100 kcal
+//     }
+
+//     private void createTestFiles() {
+//         // Create test food and exercise records for today's data
+//         File foodFile = new File(TEST_DATA_DIR + "/food_records.csv");
+//         File exerciseFile = new File(TEST_DATA_DIR + "/exercise_records.csv");
+
+//         try {
+//             if (!foodFile.exists()) {
+//                 foodFile.getParentFile().mkdirs();
+//                 foodFile.createNewFile();
+//                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(foodFile))) {
+//                     writer.write("Name,Calories,Protein,Carbs,Fat,Serving Size,Serving Count,Total Calories,Timestamp\n");
+//                     writer.write("Apple,50,0.3,14,0.2,100,1,50," + java.time.LocalDate.now() + " 00:00:00\n");
+//                     writer.write("Banana,100,1.3,27,0.3,118,1,100," + java.time.LocalDate.now() + " 00:00:00\n");
+//                 }
+//             }
+//             if (!exerciseFile.exists()) {
+//                 exerciseFile.createNewFile();
+//                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(exerciseFile))) {
+//                     writer.write("Name,Intensity,Calories Burned Per Minute,Duration,Total Calories Burned,Timestamp\n");
+//                     writer.write("Walking,Moderate,5,30,150," + java.time.LocalDate.now() + " 00:00:00\n");
+//                 }
+//             }
+//         } catch (IOException e) {
+//             fail("Failed to create test files: " + e.getMessage());
+//         }
+//     }
+
+//     private void cleanDirectory() {
+//         // Delete all files and directories in the test data folder
+//         File testDir = new File(TEST_DATA_DIR);
+//         if (testDir.exists()) {
+//             for (File file : testDir.listFiles()) {
+//                 file.delete();
+//             }
+//             testDir.delete();
+//         }
+//     }
+// }

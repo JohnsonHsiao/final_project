@@ -1,54 +1,92 @@
-package edu.meu.mgen.notification;
+// import edu.meu.mgen.tracking.Tracker;
+// import edu.meu.mgen.notification.Notification;
+// import edu.meu.mgen.user.User;
+// import edu.meu.mgen.data.Food;
+// import edu.meu.mgen.data.Exercise;
+// import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.Test;
 
+// import static org.junit.jupiter.api.Assertions.*;
 
-import edu.meu.mgen.tracking.Tracker;
-import edu.meu.mgen.data.Food;
-import edu.meu.mgen.data.Exercise;
-import edu.meu.mgen.user.User;
+// class NotificationTest {
 
-import java.time.LocalDate;
+//     private static final String TEST_USER = "test_user";
+//     private Notification notification;
+//     private Tracker tracker;
+//     private User testUser;
 
-public class NotificationTest {
+//     @BeforeEach
+//     void setUp() {
+//         // Initialize User, Tracker, and Notification
+//         testUser = new User(TEST_USER, "password123", "test@example.com", 30, "male", 175, 80, 70);
+//         tracker = new Tracker(TEST_USER, testUser);
+//         notification = new Notification(1500.0, 70.0); // Target net calories: 1500, target weight: 70 kg
+//     }
 
-    public static void main(String[] args) {
-        // 创建测试用户
-        User user = new User("JohnDoe", "password123", "johndoe@example.com", 30, "Male", 180, 185, 165);
+//     @Test
+//     void testSendNetCaloriesNotification() {
+//         // Track food and exercise to test net calories notification
+//         Food food = new Food("Pizza", 200, 500, 20, 10, 50);
+//         tracker.trackFood(food, 3); // Add 3 servings of Pizza (1500 kcal)
 
-        // 设置体重目标相关的参数：初始体重、目标体重、总周数、开始日期
-        double initialWeight = 185;
-        double targetWeight = 165;
-        int totalWeeks = 20;
-        LocalDate startDate = LocalDate.now().minusWeeks(10); // 假设目标从10周前开始
+//         Exercise exercise = new Exercise("Running", 10);
+//         exercise.setDuration(30); // Burn 300 kcal in 30 minutes
+//         tracker.trackExercise(exercise);
 
-        // 创建 Tracker 和 Notification 实例
-        Tracker tracker = new Tracker();
-        Notification notification = new Notification();
+//         // Capture the notification message
+//         notification.sendNetCaloriesNotification(tracker, testUser);
 
-        // 测试 1：发送每周体重进展通知
-        System.out.println("Test 1: Weekly Weight Progress Notification");
-        double currentWeight = 175; // 当前体重模拟为175磅
-        notification.sendProgressNotification(user, currentWeight, initialWeight, targetWeight, totalWeeks, startDate);
+//         // Check the net calories
+//         assertEquals(1200.0, tracker.calculateNetCalories(), 0.01, "Net calories should be 1200 kcal");
+//     }
 
-        // 测试 2：发送卡路里超限通知
-        System.out.println("\nTest 2: Calorie Limit Exceeded Notification");
-        double dailyCalorieLimit = 2000;
-        // tracker.addFoodEntry(new Food("Pasta", 700, 15, "1 bowl")); // 添加食物记录，模拟摄入的卡路里
-        // tracker.addFoodEntry(new Food("Salad", 300, 5, "1 plate"));
-        // tracker.addFoodEntry(new Food("Soda", 1200, 0, "1 bottle")); // 总卡路里：2200
-        notification.sendCalorieLimitExceededNotification(user, tracker, dailyCalorieLimit);
+//     @Test
+//     void testRegisterNetCaloriesListener() {
+//         // Register a listener and verify it is triggered correctly
+//         notification.registerNetCaloriesListener(tracker, testUser);
 
-        // 测试 3：发送卡路里目标达成通知
-        System.out.println("\nTest 3: Calorie Goal Reached Notification");
-        // tracker.addExerciseEntry(new Exercise("Running", 60, "High")); // 模拟运动消耗的卡路里
-        double targetCalories = 1800;
-        notification.sendCalorieGoalReachedNotification(user, tracker, targetCalories);
+//         // Add food to trigger the listener
+//         Food food = new Food("Burger", 150, 800, 30, 20, 40);
+//         tracker.trackFood(food, 2); // Add 2 servings of Burger (1600 kcal)
 
-        // 测试 4：发送每日提醒通知
-        System.out.println("\nTest 4: Daily Reminder Notification");
-        notification.sendDailyReminder(user);
+//         // Check net calories
+//         assertEquals(1600.0, tracker.calculateNetCalories(), 0.01, "Net calories should be 1600 kcal");
+//     }
 
-        // 测试 5：发送每周体重更新提醒（假设今天是提醒日）
-        System.out.println("\nTest 5: Weekly Weight Update Reminder");
-        notification.sendWeeklyWeightUpdateReminder(user);
-    }
-}
+//     @Test
+//     void testSendProgressUpdate() {
+//         // Test progress notification for weight loss
+//         double currentWeight = 75.0; // Simulate current weight
+
+//         // Send progress update
+//         notification.sendProgressUpdate(testUser, currentWeight);
+
+//         // Calculate progress
+//         double initialWeight = testUser.getWeight();
+//         double progress = (initialWeight - currentWeight) / (initialWeight - 70.0) * 100;
+
+//         assertEquals(50.0, progress, 0.01, "Progress should be 50%");
+//     }
+
+//     @Test
+//     void testSendDailyReminder() {
+//         // Simulate sending a daily reminder
+//         notification.sendDailyReminder(testUser);
+//         // Verify reminder logic doesn't throw errors
+//         assertTrue(true, "Daily reminder should execute without errors");
+//     }
+
+//     @Test
+//     void testSendDailyExerciseNotification() {
+//         // Add exercise to test exercise notification
+//         Exercise exercise = new Exercise("Cycling", 12);
+//         exercise.setDuration(60); // Burn 720 kcal in 60 minutes
+//         tracker.trackExercise(exercise);
+
+//         // Set a target and send notification
+//         notification.sendDailyExerciseNotification(tracker, testUser, 500);
+
+//         // Verify total calories burned
+//         assertEquals(720.0, tracker.getTrackingSummary().get("Total Calories Burned"), 0.01, "Calories burned should be 720 kcal");
+//     }
+// }

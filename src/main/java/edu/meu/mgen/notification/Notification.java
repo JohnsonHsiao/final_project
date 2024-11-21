@@ -2,74 +2,85 @@ package edu.meu.mgen.notification;
 
 import edu.meu.mgen.tracking.Tracker;
 import edu.meu.mgen.user.User;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 public class Notification {
 
-    // Dynamically calculate the target weight for the current week
-    private double calculateWeeklyTargetWeight(double initialWeight, double targetWeight, int totalWeeks, int currentWeek) {
-        double weightLossPerWeek = (initialWeight - targetWeight) / totalWeeks;
-        return initialWeight - (weightLossPerWeek * currentWeek);
+    private double targetNetCalories;
+    private double targetWeight;
+
+    // Constructor
+    public Notification(double targetNetCalories, double targetWeight) {
+        this.targetNetCalories = targetNetCalories;
+        this.targetWeight = targetWeight;
     }
 
-    // Check weight progress and send appropriate notification
-    public void sendProgressNotification(User user, double currentWeight, double initialWeight, double targetWeight, int totalWeeks, LocalDate startDate) {
-        int currentWeek = (int) ChronoUnit.WEEKS.between(startDate, LocalDate.now());
-
-        // Ensure current week does not exceed total weeks
-        if (currentWeek > totalWeeks) {
-            currentWeek = totalWeeks;
-        }
-
-        // Calculate the target weight for the current week
-        double weeklyTargetWeight = calculateWeeklyTargetWeight(initialWeight, targetWeight, totalWeeks, currentWeek);
-
-        // Determine if the current weight meets the target weight for the current week
-        if (currentWeight <= weeklyTargetWeight) {
-            sendGoalReachedNotification(user, currentWeek, totalWeeks);
-        } else {
-            sendMotivationNotification(user, weeklyTargetWeight);
-        }
-    }
-
-    // Send goal reached notification (dynamic for each week)
-    private void sendGoalReachedNotification(User user, int currentWeek, int totalWeeks) {
-        System.out.println("Congratulations " + user.getUsername() + "! You've achieved your target for week " + currentWeek + " of " + totalWeeks + ". Fantastic job!");
-    }
-
-    // Send motivational notification (includes weekly target weight)
-    private void sendMotivationNotification(User user, double weeklyTargetWeight) {
-        System.out.println("Don't give up, " + user.getUsername() + "! Your goal for this week is " + weeklyTargetWeight + " lbs. You're closer to your goal than you think.");
-    }
-
-    // Notification for exceeding daily calorie limit
-    public void sendCalorieLimitExceededNotification(User user, Tracker tracker, double dailyCalorieLimit) {
-        if (tracker.isOverDailyIntake(dailyCalorieLimit)) {
-            System.out.println("Alert: " + user.getUsername() + ", you've exceeded your daily calorie limit of " + dailyCalorieLimit + " kcal. Consider adjusting your intake or adding some exercise.");
-        }
-    }
-
-    // Notification for reaching daily calorie goal
-    public void sendCalorieGoalReachedNotification(User user, Tracker tracker, double targetCalories) {
+    /**
+     * Sends a notification based on the net calories for the day.
+     * Uses Tracker's real-time data to avoid duplicate file operations.
+     */
+    public void sendNetCaloriesNotification(Tracker tracker, User user) {
         double netCalories = tracker.calculateNetCalories();
-        if (netCalories <= targetCalories) {
-            System.out.println("Congratulations " + user.getUsername() + "! You've reached your calorie goal for the day.");
+
+        if (netCalories > targetNetCalories) {
+            System.out.println("Alert: " + user.getUsername() + 
+                    ", your net calorie intake is " + netCalories + 
+                    " kcal today, exceeding your target of " + targetNetCalories + 
+                    " kcal. Consider adjusting your meals or increasing your exercise.");
+        } else {
+            System.out.println("Congratulations " + user.getUsername() + 
+                    "! Your net calorie intake is " + netCalories + 
+                    " kcal today, meeting your target of " + targetNetCalories + " kcal. Keep it up!");
         }
     }
 
-    // Daily reminder for logging meals and exercises
-    public void sendDailyReminder(User user) {
-        System.out.println("Hi " + user.getUsername() + "! Don't forget to log your meals and exercises today.");
+    /**
+     * Registers a listener for real-time net calorie changes.
+     * When net calories exceed the target, it triggers a notification automatically.
+     */
+    public void registerNetCaloriesListener(Tracker tracker, User user) {
+        tracker.setNetCaloriesListener(netCalories -> {
+            if (netCalories > targetNetCalories) {
+                System.out.println("Real-time Alert: " + user.getUsername() + 
+                        ", your net calorie intake is " + netCalories + 
+                        " kcal, exceeding your daily target of " + targetNetCalories + " kcal.");
+            }
+        });
     }
 
-    // Weekly weight update reminder
-    public void sendWeeklyWeightUpdateReminder(User user) {
-        // Check if today is the specified reminder day, e.g., every Sunday
-        DayOfWeek reminderDay = DayOfWeek.SUNDAY; // Can be changed to any desired day
-        if (LocalDate.now().getDayOfWeek() == reminderDay) {
-            System.out.println("Weekly Reminder: " + user.getUsername() + ", please update your weight data to track your progress accurately.");
+    /**
+     * Sends a weekly progress update based on the user's current and target weight.
+     */
+    public void sendProgressUpdate(User user, double currentWeight) {
+        double initialWeight = user.getWeight(); // Assuming initial weight is stored in User
+        double progress = (initialWeight - currentWeight) / (initialWeight - targetWeight) * 100;
+
+        System.out.println("Progress Update: " + user.getUsername() + 
+                ", you have achieved " + String.format("%.2f", progress) + 
+                "% of your weight loss goal. Keep going!");
+    }
+
+    /**
+     * Sends a daily reminder to log food and exercise.
+     */
+    public void sendDailyReminder(User user) {
+        System.out.println("Hi " + user.getUsername() + 
+                "! Don't forget to log your meals and exercises today.");
+    }
+
+    /**
+     * Sends a notification for daily exercise progress based on the user's target calories burned.
+     */
+    public void sendDailyExerciseNotification(Tracker tracker, User user, double targetCaloriesBurned) {
+        double totalCaloriesBurned = tracker.getTrackingSummary().get("Total Calories Burned");
+
+        if (totalCaloriesBurned >= targetCaloriesBurned) {
+            System.out.println("Congratulations " + user.getUsername() + 
+                    "! You've burned " + totalCaloriesBurned + 
+                    " kcal today, exceeding your goal of " + targetCaloriesBurned + " kcal!");
+        } else {
+            System.out.println("Hey " + user.getUsername() + 
+                    ", you've burned " + totalCaloriesBurned + 
+                    " kcal today. Your goal is " + targetCaloriesBurned + " kcal. Keep going!");
         }
     }
 }
