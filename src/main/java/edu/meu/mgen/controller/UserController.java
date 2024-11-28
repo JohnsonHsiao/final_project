@@ -4,6 +4,8 @@ import edu.meu.mgen.data.Exercise;
 import edu.meu.mgen.data.ExerciseData;
 import edu.meu.mgen.data.Food;
 import edu.meu.mgen.data.FoodData;
+import edu.meu.mgen.notification.Notification;
+import edu.meu.mgen.tracking.Tracker;
 import edu.meu.mgen.registration.UserRegistration;
 import edu.meu.mgen.user.User;
 
@@ -26,6 +28,9 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UserController {
+
+    private List<String> notifications = new ArrayList<>();
+
     @Autowired
     private FoodData foodData;
 
@@ -34,6 +39,10 @@ public class UserController {
 
     private User currentUser = null;
     private final UserRegistration userRegistration = new UserRegistration();
+
+    private Notification notification;
+    private Tracker tracker;
+
 
     @GetMapping("/")
     public String home(HttpSession session, Model model) {
@@ -48,6 +57,13 @@ public class UserController {
             double bmr = currentUser.calculateBMR(); // cal BMR
             model.addAttribute("user", currentUser);
             model.addAttribute("bmr", bmr);
+
+            Map<String, Double> trackingSummary = tracker.getTrackingSummary();
+            model.addAttribute("totalCaloriesIntake", trackingSummary.get("Total Calories Intake"));
+            model.addAttribute("totalCaloriesBurned", trackingSummary.get("Total Calories Burned"));
+            model.addAttribute("netCalories", trackingSummary.get("Net Calories"));
+
+            model.addAttribute("notifications", notifications);
             return "index"; // return to index page
         }
         return "login"; // if not logged in, return to login page
@@ -92,6 +108,16 @@ public class UserController {
 
         if (isAuthenticated) {
             currentUser = userRegistration.getUserDetails(username);
+            tracker = new Tracker(username, currentUser);
+            tracker.loadTodayData();
+
+            double targetNetCalories = currentUser.calculateBMR(); 
+            notification = new Notification(targetNetCalories, currentUser.getTargetWeight(), notifications);
+
+            // Send initial notifications
+            notification.sendDailyReminder(currentUser);
+            notification.registerNetCaloriesListener(tracker, currentUser);
+            
             session.setAttribute("loggedIn", true);
             session.setAttribute("username", currentUser.getUsername());
             session.setAttribute("age", currentUser.getAge());
@@ -105,21 +131,6 @@ public class UserController {
             return "login";
         }
     }
-
-    // @GetMapping("/user/bmr")
-    // public String getUserBMR(Model model, HttpSession session) {
-    //     if (session.getAttribute("loggedIn") == null || !(boolean) session.getAttribute("loggedIn")) {
-    //         return "redirect:/login";
-    //     }
-    //     double bmr = currentUser.calculateBMR();
-    //     model.addAttribute("age", currentUser.getAge());
-    //     model.addAttribute("gender", currentUser.getGender());
-    //     model.addAttribute("height", currentUser.getHeight());
-    //     model.addAttribute("weight", currentUser.getWeight());
-    //     model.addAttribute("targetWeight", currentUser.getTargetWeight());
-    //     model.addAttribute("bmr", bmr);
-    //     return "result";
-    // }
 
     @GetMapping("/selectFood")
     public String selectFood(Model model) {
@@ -154,8 +165,12 @@ public class UserController {
                     .orElse(null);
         }
 
+        // if (selectedFood != null && currentUser != null) {
+        //     currentUser.writeFoodToCsv(selectedFood, servingCount);
+        // }
         if (selectedFood != null && currentUser != null) {
-            currentUser.writeFoodToCsv(selectedFood, servingCount);
+            tracker.trackFood(selectedFood, servingCount); 
+            notification.sendNetCaloriesNotification(tracker, currentUser);
         }
         return "redirect:/";
     }
@@ -196,7 +211,10 @@ public class UserController {
         if (selectedExercise != null && currentUser != null) {
             selectedExercise.setIntensity(intensity);
             selectedExercise.setDuration(duration);
-            currentUser.writeExerciseToCsv(selectedExercise);
+            tracker.trackExercise(selectedExercise); // 通过 Tracker 跟踪运动
+        }
+        if (notification != null) {
+            notification.sendDailyExerciseNotification(tracker, currentUser, 500.0); // 假设目标是500大卡
         }
         return "redirect:/";
     }
@@ -209,12 +227,10 @@ public class UserController {
             List<Map<String, String>> exerciseRecords = readCsvRecords(currentUser.getUsername(), "exercise_records.csv");
             model.addAttribute("foodRecords", foodRecords);
             model.addAttribute("exerciseRecords", exerciseRecords);
-            // for debugging
-            // System.out.println("Food Records: " + foodRecords);
-            // System.out.println("Exercise Records: " + exerciseRecords);
         }
         return "user_record";
     }
+
 
     private List<Map<String, String>> readCsvRecords(String username, String fileName) {
         List<Map<String, String>> records = new ArrayList<>();

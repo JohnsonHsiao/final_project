@@ -6,6 +6,7 @@ import edu.meu.mgen.user.User;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class Tracker {
     }
 
     // Load data for today only
-    private void loadTodayData() {
+    public void loadTodayData() {
         loadTodayFoodData();
         loadTodayExerciseData();
     }
@@ -119,7 +120,7 @@ public class Tracker {
             if (!fileExists) {
                 writer.write("Name,Calories,Protein,Carbs,Fat,Serving Size,Serving Count,Total Calories,Timestamp\n");
             }
-            String timestamp = LocalDate.now() + " 00:00:00"; // Current date
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));; // Current date
             writer.write(String.format("%s,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%s\n",
                     food.getName(), food.getCaloriesPerServing(), food.getProtein(),
                     food.getCarbohydrates(), food.getFat(), food.getServingSize(),

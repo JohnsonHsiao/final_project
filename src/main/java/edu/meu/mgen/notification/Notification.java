@@ -2,16 +2,19 @@ package edu.meu.mgen.notification;
 
 import edu.meu.mgen.tracking.Tracker;
 import edu.meu.mgen.user.User;
+import java.util.List;
 
 public class Notification {
 
     private double targetNetCalories;
     private double targetWeight;
+    private List<String> notificationMessages;
 
     // Constructor
-    public Notification(double targetNetCalories, double targetWeight) {
+    public Notification(double targetNetCalories, double targetWeight, List<String> notificationMessages) {
         this.targetNetCalories = targetNetCalories;
         this.targetWeight = targetWeight;
+        this.notificationMessages = notificationMessages;
     }
 
     /**
@@ -22,14 +25,18 @@ public class Notification {
         double netCalories = tracker.calculateNetCalories();
 
         if (netCalories > targetNetCalories) {
-            System.out.println("Alert: " + user.getUsername() + 
-                    ", your net calorie intake is " + netCalories + 
-                    " kcal today, exceeding your target of " + targetNetCalories + 
-                    " kcal. Consider adjusting your meals or increasing your exercise.");
+            String message = "Alert: " + user.getUsername() +
+                    ", your net calorie intake is " + netCalories +
+                    " kcal today, exceeding your target of " + targetNetCalories +
+                    " kcal. Consider adjusting your meals or increasing your exercise.";
+            System.out.println(message);
+            notificationMessages.add(message);
         } else {
-            System.out.println("Congratulations " + user.getUsername() + 
-                    "! Your net calorie intake is " + netCalories + 
-                    " kcal today, meeting your target of " + targetNetCalories + " kcal. Keep it up!");
+            String message = "Congratulations " + user.getUsername() +
+                    "! Your net calorie intake is " + netCalories +
+                    " kcal today, meeting your target of " + targetNetCalories + " kcal. Keep it up!";
+            System.out.println(message);
+            notificationMessages.add(message);
         }
     }
 
@@ -40,9 +47,11 @@ public class Notification {
     public void registerNetCaloriesListener(Tracker tracker, User user) {
         tracker.setNetCaloriesListener(netCalories -> {
             if (netCalories > targetNetCalories) {
-                System.out.println("Real-time Alert: " + user.getUsername() + 
-                        ", your net calorie intake is " + netCalories + 
-                        " kcal, exceeding your daily target of " + targetNetCalories + " kcal.");
+                String message = "Real-time Alert: " + user.getUsername() +
+                        ", your net calorie intake is " + netCalories +
+                        " kcal, exceeding your daily target of " + targetNetCalories + " kcal.";
+                System.out.println(message);
+                notificationMessages.add(message);
             }
         });
     }
@@ -54,17 +63,21 @@ public class Notification {
         double initialWeight = user.getWeight(); // Assuming initial weight is stored in User
         double progress = (initialWeight - currentWeight) / (initialWeight - targetWeight) * 100;
 
-        System.out.println("Progress Update: " + user.getUsername() + 
-                ", you have achieved " + String.format("%.2f", progress) + 
-                "% of your weight loss goal. Keep going!");
+        String message = "Progress Update: " + user.getUsername() +
+                ", you have achieved " + String.format("%.2f", progress) +
+                "% of your weight loss goal. Keep going!";
+        System.out.println(message);
+        notificationMessages.add(message);
     }
 
     /**
      * Sends a daily reminder to log food and exercise.
      */
     public void sendDailyReminder(User user) {
-        System.out.println("Hi " + user.getUsername() + 
-                "! Don't forget to log your meals and exercises today.");
+        String message = "Hi " + user.getUsername() +
+                "! Don't forget to log your meals and exercises today.";
+        System.out.println(message);
+        notificationMessages.add(message);
     }
 
     /**
@@ -74,13 +87,17 @@ public class Notification {
         double totalCaloriesBurned = tracker.getTrackingSummary().get("Total Calories Burned");
 
         if (totalCaloriesBurned >= targetCaloriesBurned) {
-            System.out.println("Congratulations " + user.getUsername() + 
-                    "! You've burned " + totalCaloriesBurned + 
-                    " kcal today, exceeding your goal of " + targetCaloriesBurned + " kcal!");
+            String message = "Congratulations " + user.getUsername() +
+                    "! You've burned " + totalCaloriesBurned +
+                    " kcal today, exceeding your goal of " + targetCaloriesBurned + " kcal!";
+            System.out.println(message);
+            notificationMessages.add(message);
         } else {
-            System.out.println("Hey " + user.getUsername() + 
-                    ", you've burned " + totalCaloriesBurned + 
-                    " kcal today. Your goal is " + targetCaloriesBurned + " kcal. Keep going!");
+            String message = "Hey " + user.getUsername() +
+                    ", you've burned " + totalCaloriesBurned +
+                    " kcal today. Your goal is " + targetCaloriesBurned + " kcal. Keep going!";
+            System.out.println(message);
+            notificationMessages.add(message);
         }
     }
 }

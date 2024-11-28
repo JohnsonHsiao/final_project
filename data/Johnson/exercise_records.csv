@@ -1,6 +1,4 @@
 Name,Intensity,Calories Burned Per Minute,Duration,Total Calories Burned,Timestamp
 Swimming,medium,8.0,10.0,80.0,2024-11-11 14:09:14
 Swimming,high,9.6,30.0,288.0,2024-11-11 14:26:00
-Jump Rope,medium,12.0,10.0,120.0,2024-11-17 20:31:51
-Table Tennis,medium,3.0,10.0,30.0,2024-11-17 20:32:27
-Casual Dancing,low,2.0,12.0,24.0,2024-11-17 21:05:57
+Jump Rope,high,14.00,60.00,864.00,2024-11-28 00:00:00

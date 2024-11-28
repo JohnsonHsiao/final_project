@@ -100,3 +100,9 @@ th {
     background-color: #007aff;
     color: #ffffff;
 }
+
+.logout {
+    margin-top: 20px;
+    padding: 10px;
+    text-align: center;
+}
