@@ -1,7 +1,9 @@
 edu/meu/mgen/data/Food.class
+edu/meu/mgen/data/InsertExerciseData.class
 edu/meu/mgen/notification/Notification.class
 edu/meu/mgen/tracking/Tracker.class
 edu/meu/mgen/data/FoodData.class
+edu/meu/mgen/data/InsertFoodData.class
 edu/meu/mgen/registration/UserRegistration.class
 edu/meu/mgen/recommendation/RecommendationEngine.class
 edu/meu/mgen/tracking/Tracker$NetCaloriesListener.class

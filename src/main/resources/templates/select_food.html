@@ -4,46 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Select Food</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .container {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            width: 100%;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <h1>Select Food Intake</h1>
         <form action="/addFoodRecord" method="post">
-            <label for="food">Food:</label>
-            <select id="food" name="food" required onchange="toggleCustomFood(this)">
-                <option th:each="food : ${foodList}" th:value="${food.name}" th:text="${food.name}"></option>
-                <option value="other">Other</option>
-            </select>
+            <div class="input-field">
+                <label for="food">Food:</label>
+                <select id="food" name="food" required onchange="toggleCustomFood(this)">
+                    <option th:each="food : ${foodList}" th:value="${food.name}" th:text="${food.name}"></option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
 
-            <div id="custom-food-field" style="display: none;">
+            <div class="input-field" id="custom-food-field" style="display: none;">
                 <label for="customFood">Custom Food:</label>
                 <input type="text" id="customFood" name="customFood" placeholder="Enter food name">
             </div>
 
-            <label for="servingCount">Serving Count:</label>
-            <input type="number" id="servingCount" name="servingCount" step="0.1" required>
+            <div class="input-field">
+                <label for="servingCount">Serving Count:</label>
+                <input type="number" id="servingCount" name="servingCount" step="0.1" required>
+            </div>
 
-            <button type="submit">Add Food Record</button>
+            <button type="submit" class="button">Add Food Record</button>
         </form>
     </div>
 
