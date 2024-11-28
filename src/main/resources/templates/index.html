@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to the BMR Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to ActiveLog</h1>
+        <div class="info">
+            <p><strong>Age:</strong> <span th:text="${user.age}"></span></p>
+            <p><strong>Gender:</strong> <span th:text="${user.gender}"></span></p>
+            <p><strong>Height:</strong> <span th:text="${user.height}"></span> cm</p>
+            <p><strong>Weight:</strong> <span th:text="${user.weight}"></span> kg</p>
+            <p><strong>Target Weight:</strong> <span th:text="${user.targetWeight}"></span> kg</p>
+            <p><strong>BMR:</strong> <span th:text="${bmr}"></span> calories/day</p>
+        </div>
+        <button onclick="location.href='select_food.html'">Select Food</button>
+        <button onclick="location.href='/selectExercise'">Select Exercise</button>
+        <button onclick="location.href='/userRecord'">User Record</button>
+    </div>
+</body>
+</html>
