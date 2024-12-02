@@ -37,6 +37,9 @@
             <label for="targetWeight">Target Weight (kg):</label>
             <input type="number" id="targetWeight" name="targetWeight" required>
 
+            <label for="targetCaloriesBurned">target Calories Burned (kcal):</label>
+            <input type="number" id="targetCaloriesBurned" name="targetCaloriesBurned" required>
+
             <button type="submit" class="button">Register</button>
         </form>
         <p th:if="${error}" th:text="${error}"></p>

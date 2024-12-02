@@ -12,14 +12,14 @@ public class UserRegistration {
     private static final String FILE_PATH = "users.csv";
 
     // 註冊新用戶
-    public boolean registerUser(String username, String password, String email, int age, String gender, double height, double weight, double targetWeight) {
+    public boolean registerUser(String username, String password, String email, int age, String gender, double height, double weight, double targetWeight, double targetCaloriesBurned) {
         if (isUsernameAvailable(username)) {
             String hashedPassword = hashPassword(password);
             if (hashedPassword == null) {
                 return false; // 密碼加密失敗
             }
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
-                writer.write(username + "," + hashedPassword + "," + email + "," + age + "," + gender + "," + height + "," + weight + "," + targetWeight);
+                writer.write(username + "," + hashedPassword + "," + email + "," + age + "," + gender + "," + height + "," + weight + "," + targetWeight + "," + targetCaloriesBurned);
                 writer.newLine();
                 return true;
             } catch (IOException e) {
@@ -70,16 +70,15 @@ public class UserRegistration {
                 String line = scanner.nextLine();
                 String[] fields = line.split(",");
                 if (fields[0].equals(username)) {
-                    return new User(fields[0], fields[1], fields[2], Integer.parseInt(fields[3]), fields[4], Double.parseDouble(fields[5]), Double.parseDouble(fields[6]), Double.parseDouble(fields[7]));
+                    return new User(fields[0], fields[1], fields[2], Integer.parseInt(fields[3]), fields[4], Double.parseDouble(fields[5]), Double.parseDouble(fields[6]), Double.parseDouble(fields[7]), Double.parseDouble(fields[8]));
                 }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return null; // 用戶不存在
+        return null; 
     }
 
-    // 使用 SHA-256 對密碼進行加密
     private String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");

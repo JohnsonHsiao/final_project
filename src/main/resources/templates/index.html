@@ -71,6 +71,20 @@
         button:hover {
             background-color: #0056b3;
         }
+        .notification-badge {
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 8px 10px;
+            font-size: 14px;  
+            position: absolute;
+            top: -8px; 
+            right: -5px;
+            z-index: 10; 
+        }
+        .header-buttons button {
+            position: relative;
+        }
     </style>
 </head>
 <body>
@@ -82,7 +96,10 @@
         <form action="/logout" method="get">
             <button type="submit">Logout</button>
         </form>
-        <button onclick="toggleNotifications()">Notifications</button>
+        <button onclick="toggleNotifications()" style="position: relative;">
+            Notifications
+            <span id="notification-count" class="notification-badge" th:text="${unreadNotificationsCount}" >${unreadNotificationsCount}</span>
+        </button>
     </div>
 
     <div class="container">
@@ -114,7 +131,7 @@
         <h2>Notifications</h2>
         <ul>
             <li th:each="notification : ${notifications}">
-                <span th:text="${notification}"></span>
+                <span th:utext="${notification}"></span>
             </li>
         </ul>
     </div>
@@ -124,6 +141,7 @@
             const notifications = document.getElementById('notifications');
             if (notifications.style.display === 'none' || notifications.style.display === '') {
                 notifications.style.display = 'block';
+                document.getElementById('notification-count').style.display = 'none';
             } else {
                 notifications.style.display = 'none';
             }

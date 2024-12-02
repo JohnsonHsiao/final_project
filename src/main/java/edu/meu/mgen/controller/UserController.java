@@ -84,9 +84,10 @@ public class UserController {
             @RequestParam double height,
             @RequestParam double weight,
             @RequestParam double targetWeight,
+            @RequestParam double targetCaloriesBurned,
             Model model) {
 
-        boolean isRegistered = userRegistration.registerUser(username, password, email, age, gender, height, weight, targetWeight);
+        boolean isRegistered = userRegistration.registerUser(username, password, email, age, gender, height, weight, targetWeight, targetCaloriesBurned);
 
         if (isRegistered) {
             model.addAttribute("message", "Registration successful! Please log in.");
@@ -211,7 +212,7 @@ public class UserController {
         if (selectedExercise != null && currentUser != null) {
             selectedExercise.setIntensity(intensity);
             selectedExercise.setDuration(duration);
-            tracker.trackExercise(selectedExercise); // 通过 Tracker 跟踪运动
+            tracker.trackExercise(selectedExercise); 
         }
         if (notification != null) {
             notification.sendDailyExerciseNotification(tracker, currentUser, 500.0); // 假设目标是500大卡

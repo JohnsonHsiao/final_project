@@ -20,11 +20,12 @@ public class User {
     private double height;
     private double weight;
     private double targetWeight;
+    private double targetCaloriesBurned;
     private List<Food> foodRecords = new ArrayList<>();
     private List<Exercise> exerciseRecords = new ArrayList<>();
 
 
-    public User(String username, String password, String email, int age, String gender, double height, double weight, double targetWeight) {
+    public User(String username, String password, String email, int age, String gender, double height, double weight, double targetWeight, double targetCaloriesBurned) {
         this.username = username;
         this.password = password;
         // this.email = email;
@@ -33,6 +34,8 @@ public class User {
         this.height = height;
         this.weight = weight;
         this.targetWeight = targetWeight;
+        this.targetCaloriesBurned = targetCaloriesBurned;
+        
     }
 
     // Getters and Setters
@@ -90,6 +93,14 @@ public class User {
 
     public void setTargetWeight(double targetWeight) {
         this.targetWeight = targetWeight;
+    }
+
+    public double getTargetCaloriesBurned() {
+        return targetCaloriesBurned;
+    }
+
+    public void setTargetCaloriesBurned(double targetCaloriesBurned) {
+        this.targetCaloriesBurned = targetCaloriesBurned;
     }
 
     public double calculateBMR() {
