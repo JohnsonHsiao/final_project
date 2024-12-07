@@ -32,9 +32,10 @@ public class Notification {
             System.out.println(message);
             notificationMessages.add(0, message);
         } else {
-            String message = "----------------------------------<br>" +"<strong>Congratulations! </strong><br>" + user.getUsername() +
+            String message = "----------------------------------<br>" +"<strong>Updating! </strong><br>" + user.getUsername() +
                     "Your net calorie intake is " + netCalories +
-                    " kcal today, meeting your target of " + targetNetCalories + " kcal.<br>Keep it up!<br>";
+                    " kcal today.<br>";
+                    //  meeting your target of " + targetNetCalories + " kcal.<br>Keep it up!<br>";
             System.out.println(message);
             notificationMessages.add(0, message);
         }
